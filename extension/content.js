@@ -119,9 +119,10 @@
     // 2. Check performance API for actual network requests (excludes validator URLs)
     try {
       const resources = performance.getEntriesByType('resource')
-      const specResource = resources.find((r) =>
-        /swagger\.json|openapi\.json/i.test(r.name) && 
-        !r.name.includes('validator.swagger.io')
+      const specResource = resources.find(
+        (r) =>
+          /swagger\.json|openapi\.json/i.test(r.name) &&
+          !r.name.includes('validator.swagger.io')
       )
       if (specResource) return specResource.name
     } catch {}
@@ -330,7 +331,8 @@
         const specData = JSON.parse(document.getElementById('spec-data').textContent);
         window.Scalar.createApiReference('#scalar-container', {
           content: specData,
-          persistAuth: true
+          persistAuth: true,
+          hideClientButton: true
         });
       }
     }
@@ -347,8 +349,8 @@
       const response = await fetch(specUrl, {
         credentials: 'same-origin',
         headers: {
-          Accept: 'application/json'
-        }
+          Accept: 'application/json',
+        },
       })
       if (!response.ok) {
         throw new Error(`Failed to fetch spec: ${response.status}`)
@@ -383,7 +385,7 @@
     iframe.style.cssText = 'border:0;width:100%;height:100%;display:block'
     iframe.referrerPolicy = 'no-referrer'
     iframe.sandbox = 'allow-scripts allow-same-origin'
-    
+
     // Use blob URL to create an independent document (bypasses frame-ancestors CSP)
     const html = generateScalarHtml(specContent)
     const blob = new Blob([html], { type: 'text/html' })
