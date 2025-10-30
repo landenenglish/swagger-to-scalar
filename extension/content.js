@@ -4,7 +4,7 @@
  *
  * @version 1.0.0
  * @license MIT
- * @author Your Name
+ * @author landenenglish
  */
 ;(function () {
   'use strict'
