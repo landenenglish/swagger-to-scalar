@@ -1,4 +1,4 @@
-# Swagger to Scalar 🚀
+# Swagger to Scalar
 
 A Chrome extension that automatically converts Swagger UI pages to beautiful Scalar API Reference documentation.
 
@@ -6,7 +6,7 @@ A Chrome extension that automatically converts Swagger UI pages to beautiful Sca
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Chrome](https://img.shields.io/badge/chrome-extension-orange)
 
-## ✨ Features
+## Features
 
 - **Automatic Conversion** - Instantly replaces Swagger UI with Scalar on any Swagger page
 - **Toggle Anytime** - Switch between Swagger and Scalar views with a single click
@@ -16,7 +16,7 @@ A Chrome extension that automatically converts Swagger UI pages to beautiful Sca
 - **Zero Configuration** - Works out of the box, no setup required
 - **Privacy First** - No data collection, tracking, or analytics
 
-## 🎯 Why Use This?
+## Why Use This?
 
 Scalar provides a modern, beautiful alternative to Swagger UI with:
 
@@ -25,7 +25,7 @@ Scalar provides a modern, beautiful alternative to Swagger UI with:
 - Improved request/response examples
 - Modern design that matches 2024+ standards
 
-## 📦 Installation
+## Installation
 
 ### From Chrome Web Store (Coming Soon)
 
@@ -38,7 +38,7 @@ Scalar provides a modern, beautiful alternative to Swagger UI with:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/swagger-to-scalar.git
+   git clone https://github.com/landenenglish/swagger-to-scalar.git
    cd swagger-to-scalar
    ```
 
@@ -52,14 +52,14 @@ Scalar provides a modern, beautiful alternative to Swagger UI with:
 
 6. The extension is now installed! Visit any Swagger UI page to test it
 
-## 🚀 Usage
+## Usage
 
 1. Navigate to any page with Swagger UI (e.g., `https://example.com/swagger`)
 2. The page automatically converts to Scalar
 3. Use the toggle button (top right) to switch back to Swagger anytime
 4. Your preference is saved and restored on page reload
 
-## 🔧 Supported Pages
+## Supported Pages
 
 Works on pages matching these patterns:
 
@@ -67,7 +67,7 @@ Works on pages matching these patterns:
 - `*://*/api-docs*`
 - `*://*/swagger-ui.html*`
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 
@@ -97,23 +97,23 @@ swagger-to-scalar/
 - **MutationObserver** - Efficient DOM watching
 - **localStorage** - Preference persistence
 
-## 🔒 Privacy
+## Privacy
 
 This extension:
 
-- ✅ Does not collect any user data
-- ✅ Does not track browsing history
-- ✅ Does not use analytics or telemetry
-- ✅ Stores only your view preference locally
-- ✅ Does not communicate with external servers (except loading Scalar's CDN)
+- Does not collect any user data
+- Does not track browsing history
+- Does not use analytics or telemetry
+- Stores only your view preference locally
+- Does not communicate with external servers (except loading Scalar's CDN)
 
 See [PRIVACY.md](PRIVACY.md) for full details.
 
-## 📝 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -123,7 +123,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 🐛 Bug Reports
+## Bug Reports
 
 Found a bug? Please open an issue with:
 
@@ -133,16 +133,16 @@ Found a bug? Please open an issue with:
 - Steps to reproduce
 - Expected vs actual behavior
 
-## 📮 Support
+## Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/swagger-to-scalar/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/swagger-to-scalar/discussions)
+- **Issues**: [GitHub Issues](https://github.com/landenenglish/swagger-to-scalar/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/landenenglish/swagger-to-scalar/discussions)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Scalar](https://github.com/scalar/scalar) - Beautiful API documentation
 - [Swagger/OpenAPI](https://swagger.io/) - API specification standard
 
 ---
 
-Made with ❤️ for developers who appreciate great UX
+By [Landen English](https://github.com/landenenglish)
