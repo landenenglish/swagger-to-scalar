@@ -2,7 +2,7 @@
  * Swagger to Scalar - Chrome Extension
  * Automatically converts Swagger UI pages to beautiful Scalar API documentation
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @license MIT
  * @author landenenglish
  */
@@ -378,13 +378,16 @@
     // Create Scalar container
     const root = createScalarRoot()
 
-    // Create and inject iframe
+    // Create and inject iframe with blob URL to bypass CSP
     const iframe = document.createElement('iframe')
     iframe.style.cssText = 'border:0;width:100%;height:100%;display:block'
     iframe.referrerPolicy = 'no-referrer'
+    iframe.sandbox = 'allow-scripts allow-same-origin'
     
-    // Use srcdoc to avoid escaping issues
-    iframe.srcdoc = generateScalarHtml(specContent)
+    // Use blob URL to create an independent document (bypasses frame-ancestors CSP)
+    const html = generateScalarHtml(specContent)
+    const blob = new Blob([html], { type: 'text/html' })
+    iframe.src = URL.createObjectURL(blob)
     root.appendChild(iframe)
 
     // Add toggle button
