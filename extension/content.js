@@ -2,7 +2,7 @@
  * Swagger to Scalar - Chrome Extension
  * Automatically converts Swagger UI pages to beautiful Scalar API documentation
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @license MIT
  * @author landenenglish
  */
@@ -79,11 +79,15 @@
    * Try to extract OpenAPI spec URL from DOM
    */
   function extractSpecFromDom() {
-    // Look for spec links in HTML
-    const link = document.querySelector(
+    // Look for spec links in HTML (excluding validator URLs)
+    const links = document.querySelectorAll(
       'a[href$="swagger.json"], a[href$="openapi.json"], a[href*="/swagger/"]'
     )
-    if (link?.href) return toAbsoluteUrl(link.href)
+    for (const link of links) {
+      if (link.href && !link.href.includes('validator.swagger.io')) {
+        return toAbsoluteUrl(link.href)
+      }
+    }
 
     // Parse SwaggerUIBundle config from inline scripts
     const swaggerScript = Array.from(document.scripts).find((s) =>
@@ -103,11 +107,7 @@
    * Get OpenAPI spec URL from various sources
    */
   async function getSpecUrl() {
-    // 1. Try DOM extraction first
-    const domUrl = extractSpecFromDom()
-    if (domUrl) return domUrl
-
-    // 2. Try window.ui.getConfigs() if available
+    // 1. Try window.ui.getConfigs() - most reliable (official Swagger UI API)
     try {
       if (window.ui?.getConfigs) {
         const config = window.ui.getConfigs()
@@ -116,14 +116,19 @@
       }
     } catch {}
 
-    // 3. Check performance API for network requests
+    // 2. Check performance API for actual network requests (excludes validator URLs)
     try {
       const resources = performance.getEntriesByType('resource')
       const specResource = resources.find((r) =>
-        /swagger\.json|openapi\.json/i.test(r.name)
+        /swagger\.json|openapi\.json/i.test(r.name) && 
+        !r.name.includes('validator.swagger.io')
       )
       if (specResource) return specResource.name
     } catch {}
+
+    // 3. Fall back to DOM extraction (least reliable)
+    const domUrl = extractSpecFromDom()
+    if (domUrl) return domUrl
 
     return null
   }
@@ -298,10 +303,11 @@
   // ============================================================================
 
   /**
-   * Generate iframe HTML for Scalar
+   * Generate iframe HTML for Scalar with spec content
    */
-  function generateScalarHtml(specUrl) {
-    const escapedUrl = specUrl.replace(/'/g, "\\'")
+  function generateScalarHtml(specContent) {
+    // Store spec in a global variable instead of inline JSON to avoid escaping issues
+    const specJson = JSON.stringify(specContent)
     return `<!DOCTYPE html>
 <html style="margin:0;padding:0;height:100%">
 <head>
@@ -313,6 +319,7 @@
     html, body { width: 100%; height: 100%; }
     #scalar-container { width: 100%; height: 100%; }
   </style>
+  <script id="spec-data" type="application/json">${specJson}</script>
 </head>
 <body>
   <div id="scalar-container"></div>
@@ -320,8 +327,9 @@
   <script>
     function initScalar() {
       if (window.Scalar?.createApiReference) {
+        const specData = JSON.parse(document.getElementById('spec-data').textContent);
         window.Scalar.createApiReference('#scalar-container', {
-          url: '${escapedUrl}',
+          content: specData,
           persistAuth: true
         });
       }
@@ -332,12 +340,40 @@
   }
 
   /**
+   * Fetch the OpenAPI spec
+   */
+  async function fetchSpec(specUrl) {
+    try {
+      const response = await fetch(specUrl, {
+        credentials: 'same-origin',
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+      if (!response.ok) {
+        throw new Error(`Failed to fetch spec: ${response.status}`)
+      }
+      return await response.json()
+    } catch (error) {
+      console.error('[Swagger→Scalar] Failed to fetch spec:', error)
+      return null
+    }
+  }
+
+  /**
    * Render Scalar in an iframe
    */
-  function renderScalar(specUrl) {
+  async function renderScalar(specUrl) {
     // Setup: dark theme + hide Swagger (prevents flash)
     applyDarkThemeIfPreferred()
     setSwaggerVisibility(false)
+
+    // Fetch the spec content
+    const specContent = await fetchSpec(specUrl)
+    if (!specContent) {
+      console.error('[Swagger→Scalar] Could not load spec from:', specUrl)
+      return
+    }
 
     // Create Scalar container
     const root = createScalarRoot()
@@ -346,13 +382,10 @@
     const iframe = document.createElement('iframe')
     iframe.style.cssText = 'border:0;width:100%;height:100%;display:block'
     iframe.referrerPolicy = 'no-referrer'
+    
+    // Use srcdoc to avoid escaping issues
+    iframe.srcdoc = generateScalarHtml(specContent)
     root.appendChild(iframe)
-
-    // Write Scalar HTML
-    const doc = iframe.contentDocument
-    doc.open()
-    doc.write(generateScalarHtml(specUrl))
-    doc.close()
 
     // Add toggle button
     const toggleButton = createToggleButton()
