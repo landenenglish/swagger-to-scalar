@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    canvas { border: 1px solid #ccc; margin: 10px; }
+    button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Icon Generator for Swagger to Scalar</h1>
+  <p>Right-click each canvas and "Save image as..." to save the icons.</p>
+  
+  <div>
+    <h3>16x16</h3>
+    <canvas id="icon16" width="16" height="16"></canvas>
+  </div>
+  
+  <div>
+    <h3>48x48</h3>
+    <canvas id="icon48" width="48" height="48"></canvas>
+  </div>
+  
+  <div>
+    <h3>128x128</h3>
+    <canvas id="icon128" width="128" height="128"></canvas>
+  </div>
+
+  <script>
+    function drawIcon(canvas) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      
+      // Background - gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#3b82f6'); // blue
+      gradient.addColorStop(1, '#8b5cf6'); // purple
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+      
+      // Arrow symbol (Swagger -> Scalar)
+      ctx.strokeStyle = 'white';
+      ctx.fillStyle = 'white';
+      ctx.lineWidth = size / 16;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      const padding = size * 0.25;
+      const arrowY = size / 2;
+      const arrowStartX = padding;
+      const arrowEndX = size - padding;
+      const arrowHeadSize = size * 0.15;
+      
+      // Arrow line
+      ctx.beginPath();
+      ctx.moveTo(arrowStartX, arrowY);
+      ctx.lineTo(arrowEndX - arrowHeadSize, arrowY);
+      ctx.stroke();
+      
+      // Arrow head
+      ctx.beginPath();
+      ctx.moveTo(arrowEndX, arrowY);
+      ctx.lineTo(arrowEndX - arrowHeadSize, arrowY - arrowHeadSize);
+      ctx.lineTo(arrowEndX - arrowHeadSize, arrowY + arrowHeadSize);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Small "S" on left (Swagger)
+      ctx.font = `bold ${size * 0.3}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('S', padding, size * 0.25);
+      
+      // Small "S" on right (Scalar) - rotated style
+      ctx.fillText('S', size - padding, size * 0.75);
+    }
+
+    // Generate all three sizes
+    drawIcon(document.getElementById('icon16'));
+    drawIcon(document.getElementById('icon48'));
+    drawIcon(document.getElementById('icon128'));
+    
+    console.log('Icons generated! Right-click each canvas to save.');
+  </script>
+</body>
+</html>
+
