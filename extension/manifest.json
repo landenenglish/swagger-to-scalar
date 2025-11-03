@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Swagger to Scalar",
   "description": "Automatically converts Swagger UI pages to beautiful Scalar API documentation with one click. Toggle between views anytime.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "landenenglish",
   "homepage_url": "https://github.com/landenenglish/swagger-to-scalar",
   "icons": {
@@ -10,7 +10,6 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "permissions": ["storage"],
   "host_permissions": [
     "*://*/swagger/*",
     "*://*/api-docs*",

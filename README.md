@@ -2,7 +2,7 @@
 
 A Chrome extension that automatically converts Swagger UI pages to beautiful Scalar API Reference documentation.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Chrome](https://img.shields.io/badge/chrome-extension-orange)
 

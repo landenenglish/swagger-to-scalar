@@ -2,7 +2,7 @@
  * Swagger to Scalar - Chrome Extension
  * Automatically converts Swagger UI pages to beautiful Scalar API documentation
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @license MIT
  * @author landenenglish
  */
